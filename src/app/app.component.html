@@ -1,0 +1,74 @@
+<div>
+<div class="text-white m-2">
+  <div class="bg-info p-2">
+    There are {{getProductCount()}}
+  </div>
+
+  <div class="bg-info text-white p-2">
+    Selected Product: {{selectedProduct}}
+  </div>
+
+  <div class="bg-info text-white p-2">
+    Selected Product ngModel: {{selectedProduct2}}
+  </div>
+  
+<table class="table table-sm table-bordered text-dark">
+  <tr 
+  *ngFor="let item of getProducts(); let i=index; let odd= odd;"
+  [class.bg-primary]="odd"
+  [class.bg-info]="getSelected(item)"
+  >
+  <td (mouseover)="selectedProduct=item.name">{{i+1}}</td>
+    <td>{{item.name}}</td>
+
+    <td>{{item.price}}</td>
+
+  </tr>
+  <div class="form-group">
+    <label>Product Name</label>
+    <input #product class="form-control" (input)="selectedProduct=$event.target.value"/>
+  </div>
+  <div class="form-group">
+    <label>Product Name</label>
+    <input  class="form-control" [(ngModel)]="selectedProduct2"/>
+  </div>
+</table>
+</div>
+
+
+
+
+<div class="m-2">
+  <div class="bg-info text-white mb-2 p-2">
+    Model Data : {{jsonProduct}}
+  </div>
+  <form novalidate #form="ngForm" (ngSubmit)="submitForm(form)"> 
+  <label>Name</label>
+  <input class="form-control" 
+  [(ngModel)]="newProduct.name"
+  #name="ngModel"
+  name="name"
+  required 
+  minlength="5"
+  pattern="^[A-Za-z]+$"/>
+  <ul class="text-danger list-unstyled"  *ngIf="(formSubmitted && name.dirty && name.invalid)">
+    <li *ngFor="let error of getValidationMessages(name)">
+        {{error}}
+    </li>
+  </ul>
+  <div class="form-group">
+    <label>Category</label>
+    <input class="form-control" [(ngModel)]="newProduct.category" name="category" >
+  </div>
+  <div class="form-group">
+    <label>price</label>
+    <input class="form-control" [(ngModel)]="newProduct.price" name="price" >
+  </div>
+  <button class="btn btn-primary" (click)="addProduct(newProduct)">Create</button>
+</form>
+<div class="bg-danger text-white p-2 mb-2"
+*ngIf="formSubmitted && form.invalid">
+There are problems with the form
+</div>
+</div>
+</div>
